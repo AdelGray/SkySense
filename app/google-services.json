@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "351045326464",
+    "project_id": "skysense-ed002",
+    "storage_bucket": "skysense-ed002.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351045326464:android:7741904677f32d357ab865",
+        "android_client_info": {
+          "package_name": "com.infinitegearstudio.skysense"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351045326464-kj5p8udo3nfnlaam48sm1n4oaofhshnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIJm3yWxHScv7lJsbzyFecvhsyr7aOQdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351045326464-kj5p8udo3nfnlaam48sm1n4oaofhshnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
