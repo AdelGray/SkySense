@@ -29,10 +29,34 @@
             android:icon="@drawable/baseline_wb_sunny_24"
             android:title="sensor UV" />
 
-        <item
-            android:id="@+id/navCerrarSesion"
-            android:icon="@drawable/baseline_logout_24"
-            android:title="Cerrar Sesión" />
+        <item>
+
+            <menu>
+
+                <item
+                    android:id="@+id/navNoticias"
+                    android:icon="@drawable/baseline_newspaper_24"
+                    android:title="Noticias" />
+
+                <item
+                    android:id="@+id/navComoComienzo"
+                    android:icon="@drawable/baseline_help_center_24"
+                    android:title="¿ComoComienzo?" />
+
+                <item
+                    android:id="@+id/navSobreNosotros"
+                    android:icon="@drawable/baseline_badge_24"
+                    android:title="Sobre nosotros" />
+
+
+                <item
+                android:id="@+id/navCerrarSesion"
+                android:icon="@drawable/baseline_logout_24"
+                android:title="Cerrar Sesión" />
+
+            </menu>
+
+        </item>
 
 
     </group>

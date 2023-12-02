@@ -81,6 +81,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
 
+    implementation ("com.hbb20:ccp:2.5.2")  // Reemplaza con la versión más reciente si es necesario
+
+
     implementation ("com.github.bumptech.glide:glide:4.12.0")  // Asegúrate de verificar la versión más reciente en https://github.com/bumptech/glide
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 

@@ -45,6 +45,15 @@
             android:hint="Nombre"
             android:inputType="text" />
 
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:ccp_showFlag="true"
+            app:ccp_showFullName="true"
+            app:ccp_defaultNameCode="US" />
+
+
         <EditText
             android:id="@+id/etPais"
             android:layout_width="match_parent"
