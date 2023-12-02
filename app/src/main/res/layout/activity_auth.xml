@@ -18,6 +18,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            app:srcCompat="@drawable/skysenseicon" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="11dp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="-------    SignUp    -------"
+            android:textAlignment="center" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
@@ -31,7 +52,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Password"
+            android:hint="Contraseña"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/etRePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Repita Contraseña"
             android:inputType="textPassword" />
 
         <LinearLayout
@@ -60,5 +89,37 @@
             android:layout_height="wrap_content"
             android:text="Google"
             app:icon="@drawable/googleicon" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="18dp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="-------    Contrato    -------"
+            android:textAlignment="center" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="18dp" />
+
+        <CheckBox
+            android:id="@+id/cbTerms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="He leído y acepto los términos y condiciones del servicio." />
+
+        <TextView
+            android:id="@+id/etTerms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Terminos y Condiciones "
+            android:textColor="#1831D3"
+            android:textAlignment="textEnd"/>
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -57,34 +59,53 @@ class AuthActivity : AppCompatActivity() {
 
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPassword = findViewById<EditText>(R.id.etPassword)
+        val etRePassword = findViewById<EditText>(R.id.etRePassword)
 
+        val cbTerms = findViewById<CheckBox>(R.id.cbTerms)
+        val etTerm = findViewById<TextView>(R.id.etTerms)
 
         title = "Autentificacion"
 
-        btGoogle.setOnClickListener {
-            val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
+        etTerm.setOnClickListener {
 
-            val googleClient:GoogleSignInClient = GoogleSignIn.getClient(this,googleConf)
-            googleClient.signOut()
-            // Inicia la actividad de inicio de sesión de Google
-            val signInIntent = googleClient.signInIntent
-            startActivityForResult(signInIntent, GOOGLE_SIGN_IN)
+            val intent = Intent(this, termsConditions::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+
+        btGoogle.setOnClickListener {
+
+            if (cbTerms.isChecked) {
+                val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build()
+
+                val googleClient: GoogleSignInClient = GoogleSignIn.getClient(this, googleConf)
+                googleClient.signOut()
+                // Inicia la actividad de inicio de sesión de Google
+                val signInIntent = googleClient.signInIntent
+                startActivityForResult(signInIntent, GOOGLE_SIGN_IN)
+            }
+            else{
+                showAlert("Advertencia","Debe aceptar los terminos y condiciones")
+            }
 
         }
 
         btSignup.setOnClickListener {
-            if(etEmail.text.isNotEmpty() && etPassword.text.isNotEmpty()){
+            if(etEmail.text.isNotEmpty() && etPassword.text.isNotEmpty() && (etPassword.text.toString() == etRePassword.text.toString()) && cbTerms.isChecked){
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(etEmail.text.toString(),etPassword.text.toString()).addOnCompleteListener {
                     if (it.isSuccessful){
                         showHome(it.result?.user?.email?:"",ProviderType.BASIC)
                     }
                     else{
-                        showAlert()
+                        showAlert("ERROR","Ingrese Los campos y acepte los términos y condiciones")
                     }
                 }
+            }else{
+                showAlert("ERROR","Ingrese Los campos y acepte los términos y condiciones")
             }
         }
 
@@ -95,7 +116,7 @@ class AuthActivity : AppCompatActivity() {
                             showHome(it.result?.user?.email?:"",ProviderType.BASIC)
                         }
                         else{
-                            showAlert()
+                            showAlert("ERROR","Error de auntentificación")
                         }
                     }
                 }
@@ -103,11 +124,11 @@ class AuthActivity : AppCompatActivity() {
 
     }
 
-    private fun showAlert(){
+    private fun showAlert(title:String,message:String){
 
         val builder= AlertDialog.Builder(this)
-        builder.setTitle(("Error"))
-        builder.setMessage("Se produjo un error en la autentificación")
+        builder.setTitle((title))
+        builder.setMessage(message)
         builder.setPositiveButton("Aceptar",null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
@@ -139,17 +160,17 @@ class AuthActivity : AppCompatActivity() {
                         if (authTask.isSuccessful) {
                             showHome(account.email ?: "", ProviderType.GOOGLE)
                         } else {
-                            showAlert()
+                            showAlert("ERROR","Error de auntentificación")
                         }
                     }
                 } else {
-                    showAlert()
+                    showAlert("ERROR","Error de auntentificación")
                 }
             } catch (e: ApiException) {
-                showAlert()
+                showAlert("ERROR","Error de auntentificación")
             }
         } else {
-            showAlert()
+            showAlert("ERROR","Error de auntentificación")
         }
     }
 
