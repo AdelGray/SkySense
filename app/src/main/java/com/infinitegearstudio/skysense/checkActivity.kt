@@ -40,6 +40,12 @@ class checkActivity : AppCompatActivity() {
 
     private fun setup(email:String,provider:String){
 
+        db.collection("users").document("email").get().addOnSuccessListener {
+            val intent = Intent(this,Pruebas::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         val btLogOut = findViewById<Button>(R.id.btLogOut)
 
         val etEmail = findViewById<EditText>(R.id.etConEmail)

@@ -41,7 +41,7 @@
                 <item
                     android:id="@+id/navComoComienzo"
                     android:icon="@drawable/baseline_help_center_24"
-                    android:title="¿ComoComienzo?" />
+                    android:title="¿Cómo Comienzo?" />
 
                 <item
                     android:id="@+id/navSobreNosotros"

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageViewSplash"
-        android:layout_width="412dp"
-        android:layout_height="301dp"
+        android:layout_width="321dp"
+        android:layout_height="231dp"
         android:scaleType="fitCenter"
         android:src="@drawable/gearsicon"
         app:layout_constraintBottom_toBottomOf="parent"

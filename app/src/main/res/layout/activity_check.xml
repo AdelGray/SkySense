@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".checkActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="151dp"
-        android:layout_height="159dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.988"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/miko" />
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,13 +17,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            app:srcCompat="@drawable/signup" />
+
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            android:text="Registro" />
+            android:text="------  Registro  ------"
+            android:textAlignment="center" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
 
         <EditText
             android:id="@+id/etName"
@@ -45,29 +42,13 @@
             android:hint="Nombre"
             android:inputType="text" />
 
-        <com.hbb20.CountryCodePicker
-            android:id="@+id/ccp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:ccp_showFlag="true"
-            app:ccp_showFullName="true"
-            app:ccp_defaultNameCode="US" />
-
 
         <EditText
             android:id="@+id/etPais"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Pais"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/etCiudad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Ciudad"
+            android:hint="Apellido"
             android:inputType="text" />
 
         <EditText
@@ -78,11 +59,43 @@
             android:hint="Telefono"
             android:inputType="phone" />
 
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="------  Seleccionar ubicación  ------"
+            android:textAlignment="center" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ccp_defaultNameCode="US"
+            app:ccp_showFlag="true"
+            app:ccp_showFullName="true" />
+
+        <EditText
+            android:id="@+id/etCiudad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Ciudad"
+            android:inputType="text" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
+
         <Button
             android:id="@+id/btSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registrar" />
+            android:text="Registrar"
+            app:icon="@drawable/baseline_login_24" />
 
         <Space
             android:layout_width="match_parent"
@@ -109,7 +122,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cerrar Sesión" />
+            android:text="Cerrar Sesión"
+            app:icon="@drawable/baseline_logout_24" />
 
         <LinearLayout
             android:layout_width="match_parent"
