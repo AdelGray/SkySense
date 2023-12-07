@@ -13,4 +13,34 @@
     <string name="menu_home">Casa</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+
+    //Strings para authactivity
+
+    <string name="etSingUp">-------------Sing Up-------------</string>
+
+    <string name="etEmail">Email</string>
+    <string name="etPassword">Password</string>
+    <string name="etRePasswordEmail">Repeat password</string>
+
+    <string name="btSignUp">Sing Up</string>
+    <string name="btLogin">Log in</string>
+
+    <string name="btGoogle">Google</string>
+
+
+    <string name="tvContract">-------------Contract-------------</string>
+    <string name="cbTerms">I have read and accept the terms and conditions of service.</string>
+    <string name="tvTermsAndConditions">Terms and Conditions</string>
+
+    //Strings para settings
+
+    <string name="tvStation">Station</string>
+    <string name="tvSensorDht22">Dht22</string>
+    <string name="tvSensorBmp208">Bmp208</string>
+
+    <string name="swOn">Switched on</string>
+    <string name="tvRatio">Refreshment Ratio</string>
+
+
 </resources>

@@ -32,8 +32,9 @@ class splashscreen : AppCompatActivity() {
         Handler().postDelayed({
             // This method will be executed once the timer is over
             // Start your app's main activity
-            val intent = Intent(this, AuthActivity::class.java)
-            //val intent = Intent(this, Pruebas::class.java)
+            //val intent = Intent(this, AuthActivity::class.java)
+            //val intent = Intent(this, Settings::class.java)
+            val intent = Intent(this, Pruebas::class.java)
             startActivity(intent)
 
             // Close this activity

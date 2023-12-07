@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    //Strings para authactivity
+
+    <string name="etSingUp">-------------Registro-------------</string>
+
+    <string name="etEmail">Email</string>
+    <string name="etPassword">Contraseña</string>
+    <string name="etRePasswordEmail">Repetir contraseña</string>
+
+    <string name="btSignUp">Registrar</string>
+    <string name="btLogin">Acceder</string>
+
+    <string name="btGoogle">Google</string>
+
+
+    <string name="tvContract">-------------Contrato-------------</string>
+    <string name="cbTerms">He leído y acepto los términos y condiciones del servicio.</string>
+    <string name="tvTermsAndConditions">Terminos y condiciones</string>
+
+
+
+    //Strings para settings
+
+    <string name="tvStation">Estación</string>
+    <string name="tvSensorDht22">Dht22</string>
+    <string name="tvSensorBmp208">Bmp208</string>
+
+    <string name="swOn">Encendido</string>
+    <string name="tvRatio">Tasa de Refresco</string>
+
+</resources>
