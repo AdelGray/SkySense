@@ -7,20 +7,20 @@
         <item
             android:id="@+id/navHumedad"
             android:icon="@drawable/baseline_water_drop_24"
-            android:title="Sensor de humedad relativa" />
+            android:title="@string/hygrometer" />
 
         <item
-            android:id="@+id/navFotodetector"
+            android:id="@+id/nav_gallery"
             android:icon="@drawable/baseline_brightness_4_24"
-            android:title="fotodetector de luz" />
+            android:title="@string/photometer" />
         <item
-            android:id="@+id/navTermometro"
+            android:id="@+id/nav_termometro"
             android:icon="@drawable/baseline_thermostat_24"
-            android:title="Termómetro" />
+            android:title="@string/thermometer" />
         <item
             android:id="@+id/navBarometro"
             android:icon="@drawable/baseline_public_24"
-            android:title="Barómetro" />
+            android:title="@string/barometer" />
 
 
 
@@ -50,7 +50,7 @@
 
 
                 <item
-                android:id="@+id/navCerrarSesion"
+                android:id="@+id/nav_log_out"
                 android:icon="@drawable/baseline_logout_24"
                 android:title="Cerrar Sesión" />
 

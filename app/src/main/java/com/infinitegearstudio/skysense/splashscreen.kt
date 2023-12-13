@@ -34,7 +34,8 @@ class splashscreen : AppCompatActivity() {
             // Start your app's main activity
             //val intent = Intent(this, AuthActivity::class.java)
             //val intent = Intent(this, Settings::class.java)
-            val intent = Intent(this, Pruebas::class.java)
+            //val intent = Intent(this, Pruebas::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
 
             // Close this activity

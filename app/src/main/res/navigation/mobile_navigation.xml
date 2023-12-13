@@ -14,12 +14,18 @@
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.infinitegearstudio.skysense.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/photometer"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_termometro"
         android:name="com.infinitegearstudio.skysense.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/thermometer"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_log_out"
+        android:name="com.infinitegearstudio.skysense.ui.logout.logOutFragment"
+        android:label="@string/logOut"
+        tools:layout="@layout/fragment_log_out" />
 </navigation>

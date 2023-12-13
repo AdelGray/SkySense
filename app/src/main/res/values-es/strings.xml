@@ -31,4 +31,14 @@
     <string name="swOn">Encendido</string>
     <string name="tvRatio">Tasa de Refresco</string>
 
+
+    //String para bar de fragments
+
+    <string name="hygrometer">higrómetro</string>
+    <string name="photometer">fotómetro</string>
+    <string name="thermometer">termómetro</string>
+    <string name="barometer">barómetro</string>
+
+    <string name="logOut">Cerrar Sesión</string>
+
 </resources>
