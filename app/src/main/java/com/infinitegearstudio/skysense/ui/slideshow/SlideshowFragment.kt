@@ -1,12 +1,14 @@
 package com.infinitegearstudio.skysense.ui.slideshow
 
 import android.content.ContentValues
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.BarChart
@@ -20,7 +22,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.infinitegearstudio.skysense.R
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import com.infinitegearstudio.skysense.databinding.FragmentSlideshowBinding
+import java.util.Locale
 
 
 // Obtén una referencia a la base de datos
@@ -58,6 +63,7 @@ class SlideshowFragment : Fragment() {
             val listaDias: MutableList<DataSnapshot> = mutableListOf()
 
             myRef.addValueEventListener(object : ValueEventListener {
+                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         Log.d(ContentValues.TAG, "dias encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
@@ -85,6 +91,40 @@ class SlideshowFragment : Fragment() {
                             count++
                         }
 
+
+                        val etTemperaturePort = binding.etTemperaturePort
+                        val etTemperature = binding.etTemperature
+                        val tvHumidity = binding.tvHumidity
+
+                        var temperatureNow= Math.round(listaDias.reversed()[0].children.reversed()[0].child("temperature").value.toString().toFloat()).toString()+"°C"
+                        var humidityNow = Math.round(listaDias.reversed()[0].children.reversed()[0].child("humidity").value.toString().toFloat()).toString()+"%"
+
+                        etTemperaturePort.setText(temperatureNow)
+                        etTemperature.setText(temperatureNow)
+
+                        tvHumidity.setText(humidityNow)
+
+
+//-------------------------
+
+                        val tvFecha = binding.tvFecha
+                        var tvDia = binding.tvDia
+                        // Obtener la fecha y hora actual
+                        val fechaYHoraActual = LocalDateTime.now()
+
+                        // Formatear la fecha y hora según tus necesidades
+                        val fecha = DateTimeFormatter.ofPattern("d MMMM", Locale.getDefault())
+                        val dia = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
+                        val fechaFormateada = fechaYHoraActual.format(fecha)
+                        val horaFormateada = fechaYHoraActual.format(dia)
+                        // Imprimir la fecha y hora actual
+
+
+                        // Imprimir la fecha y hora actual
+                        tvDia.setText(horaFormateada)
+                        tvFecha.setText(fechaFormateada)
+
+                        println("Fecha y hora actual: $fechaFormateada")
 
 
 
