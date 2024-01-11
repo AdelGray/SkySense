@@ -5,6 +5,9 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
+
+
+
     <fragment
         android:id="@+id/nav_home"
         android:name="com.infinitegearstudio.skysense.ui.home.HomeFragment"
@@ -18,7 +21,7 @@
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_termometro"
+        android:id="@+id/nav_start"
         android:name="com.infinitegearstudio.skysense.ui.slideshow.SlideshowFragment"
         android:label="@string/thermometer"
         tools:layout="@layout/fragment_slideshow" />
@@ -28,4 +31,36 @@
         android:name="com.infinitegearstudio.skysense.ui.logout.logOutFragment"
         android:label="@string/logOut"
         tools:layout="@layout/fragment_log_out" />
+
+    <fragment
+        android:id="@+id/nav_thermometer"
+        android:name="com.infinitegearstudio.skysense.ui.termometer.TermometerFragment"
+        android:label="@string/thermometer"
+        tools:layout="@layout/fragment_termometer" />
+
+    <fragment
+        android:id="@+id/nav_hygrometer"
+        android:name="com.infinitegearstudio.skysense.ui.higrometer.higrometerFragment"
+        android:label="@string/hygrometer"
+        tools:layout="@layout/fragment_higrometer" />
+
+    <fragment
+        android:id="@+id/nav_barometer"
+        android:name="com.infinitegearstudio.skysense.ui.barometer.BarometerFragment"
+        android:label="@string/barometer"
+        tools:layout="@layout/fragment_barometer" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.infinitegearstudio.skysense.ui.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/nav_aboutus"
+        android:name="com.infinitegearstudio.skysense.ui.aboutus.AboutusFragment"
+        android:label="@string/aboutus"
+        tools:layout="@layout/fragment_aboutus" />
+
+
 </navigation>

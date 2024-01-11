@@ -1,21 +1,17 @@
-package com.infinitegearstudio.skysense.ui.gallery
+package com.infinitegearstudio.skysense.ui.termometer
 
 import android.content.ContentValues
 import android.os.Build
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -25,42 +21,43 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.infinitegearstudio.skysense.R
 import com.infinitegearstudio.skysense.databinding.FragmentGalleryBinding
+import com.infinitegearstudio.skysense.databinding.FragmentSlideshowBinding
+import com.infinitegearstudio.skysense.databinding.FragmentTermometerBinding
+import com.infinitegearstudio.skysense.ui.gallery.GalleryViewModel
 
-class GalleryFragment : Fragment() {
+class TermometerFragment : Fragment() {
 
-    private var _binding: FragmentGalleryBinding? = null
+
+    private var _binding: FragmentTermometerBinding? = null
+    private val binding get() = _binding!!
 
 
     // Obtén una referencia a la base de datos
     val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    val myRef: DatabaseReference = database.getReference("sensors").child("lm393")
-
-
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    val myRef: DatabaseReference = database.getReference("sensors").child("bmp280")
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val galleryViewModel =
-            ViewModelProvider(this).get(GalleryViewModel::class.java)
 
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        val termometerViewModel = ViewModelProvider(this).get(TermometerViewModel::class.java)
+
+        _binding = FragmentTermometerBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textGallery
-        galleryViewModel.text.observe(viewLifecycleOwner) {
+
+
+
+        termometerViewModel.text.observe(viewLifecycleOwner) {
 
 
             val lineChart: LineChart = binding.lineChart
             val listaDias: MutableList<DataSnapshot> = mutableListOf()
 
-        myRef.addValueEventListener(object :
+            myRef.addValueEventListener(object :
                 ValueEventListener {
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -82,7 +79,7 @@ class GalleryFragment : Fragment() {
 
                         for (horaSnapshot in listaDias.reversed()[0].children) {
                             luminousintensity =
-                                horaSnapshot.child("luminousintensity").value.toString().toFloat()
+                                horaSnapshot.child("temperature").value.toString().toFloat()
                             entries.add(Entry(count, luminousintensity))
                             luminousintensityList.add(luminousintensity)
                             count++
@@ -90,13 +87,13 @@ class GalleryFragment : Fragment() {
 
                         Log.d(ContentValues.TAG, "Tamaño entriees: " + entries.size)
                         val etluminousintensity = binding.etluminousintensity
-                        var luminousintensityNow = (listaDias.reversed()[0].children.reversed()[0].child("luminousintensity").value.toString().toFloat()*10).toString() + "-Lum"
+                        var luminousintensityNow = (listaDias.reversed()[0].children.reversed()[0].child("temperature").value.toString().toFloat()).toString() + " °C"
 
 
                         etluminousintensity.setText(luminousintensityNow)
 
 
-                        val dataSet = LineDataSet(entries, "Luminosidad")
+                        val dataSet = LineDataSet(entries, "Temperatura")
                         val dataSets: ArrayList<ILineDataSet> = ArrayList()
                         dataSets.add(dataSet)
 
@@ -104,7 +101,7 @@ class GalleryFragment : Fragment() {
                         lineChart.data = lineData
 
                         // Personalizar el gráfico según tus necesidades
-                        lineChart.description.text = "Luminosidad vs Tiempo"
+                        lineChart.description.text = "Temperatura vs Tiempo"
                         lineChart.setTouchEnabled(true)
                         lineChart.isDragEnabled = true
                         lineChart.setScaleEnabled(true)
@@ -127,11 +124,15 @@ class GalleryFragment : Fragment() {
         }
 
 
+
         return root
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+       // viewModel = ViewModelProvider(this).get(TermometerViewModel::class.java)
+        // TODO: Use the ViewModel
     }
+
 }

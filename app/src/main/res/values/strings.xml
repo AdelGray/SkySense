@@ -38,10 +38,16 @@
     <string name="tvStation">Station</string>
     <string name="tvSensorDht22">Dht22</string>
     <string name="tvSensorBmp208">Bmp208</string>
+    <string name="tvSensorLm393">Lm393</string>
+
 
     <string name="swOn">Switched on</string>
     <string name="tvRatio">Refreshment Ratio</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="tvDht22">humidity and temperature control</string>
+    <string name="tvbmp280">pressure and temperature control</string>
+    <string name="tvLm393">light intensity control</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
@@ -51,10 +57,20 @@
     <string name="photometer">photometer</string>
     <string name="thermometer">thermometer</string>
     <string name="barometer">barometer</string>
-
-
-
+    <string name="settings">settings</string>
     <string name="logOut">Log Out</string>
+
+
+    //Strings para sobre nosotros
+
+    <string name="aboutus">About us</string>
+    <string name="aboutuscont">Welcome to SkySense, your personal weather companion. At SkySense, we are passionate about providing you with accurate and detailed weather information so that you are always prepared for any weather condition.</string>
+
+    <string name="mission">Mission</string>
+    <string name="missioncont">Our mission at SkySense is to provide users with a unique and personalized weather experience. We strive to make weather information accessible, understandable and valuable to everyone. We want to help you plan your day, your week or your outdoor adventures with complete confidence.</string>
+
+    <string name="Contactus">Contact us</string>
+    <string name="Contactuscont">Do you have any questions, comments or suggestions? We would love to hear from you. You can contact us at [your email address] or follow us on our social networks: [links to social networks].</string>
 
 
 </resources>

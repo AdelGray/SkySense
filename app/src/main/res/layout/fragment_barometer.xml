@@ -27,7 +27,7 @@
                 android:id="@+id/textGallery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="lm393"
+                android:text="Bmp42"
                 android:textAlignment="textEnd" />
 
             <Space
@@ -63,7 +63,7 @@
                 android:id="@+id/imageView4"
                 android:layout_width="match_parent"
                 android:layout_height="204dp"
-                android:src="@drawable/lum" />
+                android:src="@drawable/atm" />
 
         </LinearLayout>
 

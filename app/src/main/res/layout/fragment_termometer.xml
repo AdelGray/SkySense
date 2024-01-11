@@ -24,7 +24,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textGallery"
+                android:id="@+id/tvSensor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="lm393"
@@ -60,10 +60,10 @@
                 android:layout_height="27dp" />
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/textGallery"
                 android:layout_width="match_parent"
                 android:layout_height="204dp"
-                android:src="@drawable/lum" />
+                android:src="@drawable/temp" />
 
         </LinearLayout>
 

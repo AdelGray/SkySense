@@ -45,8 +45,7 @@ class SlideshowFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
+        val slideshowViewModel = ViewModelProvider(this).get(SlideshowViewModel::class.java)
 
         _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -95,10 +94,11 @@ class SlideshowFragment : Fragment() {
                         val etTemperaturePort = binding.etTemperaturePort
                         val etTemperature = binding.etTemperature
                         val tvHumidity = binding.tvHumidity
+                        val tvAtm = binding.tvAtm
 
                         var temperatureNow= Math.round(listaDias.reversed()[0].children.reversed()[0].child("temperature").value.toString().toFloat()).toString()+"°C"
                         var humidityNow = Math.round(listaDias.reversed()[0].children.reversed()[0].child("humidity").value.toString().toFloat()).toString()+"%"
-
+                   
                         etTemperaturePort.setText(temperatureNow)
                         etTemperature.setText(temperatureNow)
 
@@ -108,7 +108,8 @@ class SlideshowFragment : Fragment() {
 //-------------------------
 
                         val tvFecha = binding.tvFecha
-                        var tvDia = binding.tvDia
+                        val tvDia = binding.tvDia
+
                         // Obtener la fecha y hora actual
                         val fechaYHoraActual = LocalDateTime.now()
 

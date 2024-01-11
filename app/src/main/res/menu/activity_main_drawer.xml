@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
+    tools:showIn="navigation_view"
+    android:background="@drawable/framenature">
 
     <group android:checkableBehavior="single">
+
         <item
-            android:id="@+id/navHumedad"
+            android:id="@+id/nav_start"
+            android:icon="@drawable/baseline_home_24"
+            android:title="Inicio" />
+
+        <item
+            android:id="@+id/nav_hygrometer"
             android:icon="@drawable/baseline_water_drop_24"
             android:title="@string/hygrometer" />
 
@@ -13,40 +20,35 @@
             android:id="@+id/nav_gallery"
             android:icon="@drawable/baseline_brightness_4_24"
             android:title="@string/photometer" />
+
         <item
-            android:id="@+id/nav_termometro"
+            android:id="@+id/nav_thermometer"
             android:icon="@drawable/baseline_thermostat_24"
             android:title="@string/thermometer" />
+
         <item
-            android:id="@+id/navBarometro"
+            android:id="@+id/nav_barometer"
             android:icon="@drawable/baseline_public_24"
             android:title="@string/barometer" />
 
 
 
-        <item
-            android:id="@+id/navSensorUv"
-            android:icon="@drawable/baseline_wb_sunny_24"
-            android:title="sensor UV" />
+
 
         <item>
 
             <menu>
 
-                <item
-                    android:id="@+id/navNoticias"
-                    android:icon="@drawable/baseline_newspaper_24"
-                    android:title="Noticias" />
 
                 <item
-                    android:id="@+id/navComoComienzo"
-                    android:icon="@drawable/baseline_help_center_24"
-                    android:title="¿Cómo Comienzo?" />
-
-                <item
-                    android:id="@+id/navSobreNosotros"
+                    android:id="@+id/nav_aboutus"
                     android:icon="@drawable/baseline_badge_24"
                     android:title="Sobre nosotros" />
+
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/baseline_settings_24"
+                    android:title="Configuración" />
 
 
                 <item
