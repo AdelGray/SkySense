@@ -1,5 +1,6 @@
 package com.infinitegearstudio.skysense.ui.home
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,83 +14,112 @@ import com.infinitegearstudio.skysense.R
 import com.infinitegearstudio.skysense.databinding.FragmentHomeBinding
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.infinitegearstudio.skysense.AuthActivity
-
-class HomeFragment : Fragment() {
-
-    private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+import com.infinitegearstudio.skysense.ui.slideshow.myRef
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 
 
+    class HomeFragment : Fragment() {
 
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        private var _binding: FragmentHomeBinding? = null
+        private val binding get() = _binding!!
+
+        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+        val myRef: DatabaseReference = com.infinitegearstudio.skysense.ui.slideshow.database.getReference("sensors")
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val homeViewModel =
+                ViewModelProvider(this).get(HomeViewModel::class.java)
+
+            _binding = FragmentHomeBinding.inflate(inflater, container, false)
+            val root: View = binding.root
+
+            if(false) {
+
+                homeViewModel.text.observe(viewLifecycleOwner) {
+                    if (_binding != null && isAdded) {  // Verificar si el fragmento está agregado
+                        myRef.addValueEventListener(object : ValueEventListener {
+                            @RequiresApi(Build.VERSION_CODES.O)
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    val etTemperaturePort = binding.etTemperaturePort
+                                    val etTemperature = binding.etTemperature
+                                    val tvHumidity = binding.tvHumidity
+                                    val tvAtm = binding.tvAtm
+                                    val tvLum = binding.tvLum
 
 
+                                    // Verificar si las vistas no son nulas antes de realizar operaciones
+                                    if (etTemperaturePort != null && etTemperature != null &&
+                                        tvHumidity != null && tvAtm != null && tvLum != null
+                                    ) {
+
+                                        if (etTemperaturePort != null) {
+                                            Log.d("HomeFragment", "etTemperaturePort no es nulo")
+                                            var temperatureNow =
+                                                dataSnapshot.child("dht22").children.last().children.last()
+                                                    .child("temperature").value.toString() + " °C"
+                                            var humidityNow =
+                                                dataSnapshot.child("dht22").children.last().children.last()
+                                                    .child("humidity").value.toString() + " %"
+                                            var luminosityNow =
+                                                dataSnapshot.child("lm393").children.last().children.last()
+                                                    .child("luminousintensity").value.toString() + " -Lum"
+                                            var atmNow =
+                                                dataSnapshot.child("bmp280").children.last().children.last()
+                                                    .child("pressure").value.toString() + " -Atm"
+
+                                            etTemperaturePort.setText(temperatureNow)
+                                            etTemperature.setText(temperatureNow)
+                                            tvHumidity.setText(humidityNow)
+                                            tvLum.setText(luminosityNow)
+                                            tvAtm.setText(atmNow)
+
+                                        }
 
 
-            var btLogOut = binding.btLogOut
+                                    } else {
+                                        Log.e("HomeFragment", "Al menos una vista es nula.")
+                                    }
+                                } else {
+                                    Log.d(ContentValues.TAG, "no encontrado.")
+                                }
+                            }
 
-            val etPassword = binding.etConPassword
-            val etEmail = binding.etConEmail
-
-            // Recuperar datos de SharedPreferences
-            // Recuperar datos de SharedPreferences usando requireContext()
-            val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
-
-            val email = sharedPreferences.getString("email", "")
-            val provider = sharedPreferences.getString("provider", "")
-
-
-
-            etEmail.setText(email)
-            etPassword.setText(provider)
-
-            homeViewModel.text.observe(viewLifecycleOwner, Observer { newText ->
-                // Actualiza la interfaz de usuario cuando cambia el LiveData
-                btLogOut.text = newText
-            })
-
-
-
-
-            // Configura un listener de clic para el botón
-            btLogOut.setOnClickListener {
-                // Realiza la acción deseada cuando se hace clic en el botón
-                // Puedes actualizar el LiveData aquí si es necesario
-                val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-                FirebaseAuth.getInstance().signOut()
-
-                sharedPreferences.clear()
-                sharedPreferences.apply()
+                            override fun onCancelled(error: DatabaseError) {
+                                // Manejar error en la lectura de datos
+                                Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
+                            }
+                        })
+                    }
+                }
             }
 
-
+            return root
         }
-        return root
 
-
-
-        
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-}

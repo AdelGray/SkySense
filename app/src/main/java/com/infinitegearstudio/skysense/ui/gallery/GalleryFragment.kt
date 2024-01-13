@@ -34,7 +34,7 @@ class GalleryFragment : Fragment() {
 
     // Obtén una referencia a la base de datos
     val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    val myRef: DatabaseReference = database.getReference("sensors").child("lm393")
+    val myRef: DatabaseReference = database.getReference("sensors")
 
 
 
@@ -80,7 +80,7 @@ class GalleryFragment : Fragment() {
                         var count: Float = 0f
 
 
-                        for (horaSnapshot in listaDias.reversed()[0].children) {
+                        for (horaSnapshot in  dataSnapshot.child("lm393").children.last().children) {
                             luminousintensity =
                                 horaSnapshot.child("luminousintensity").value.toString().toFloat()
                             entries.add(Entry(count, luminousintensity))
@@ -88,9 +88,9 @@ class GalleryFragment : Fragment() {
                             count++
                         }
 
-                        Log.d(ContentValues.TAG, "Tamaño entriees: " + entries.size)
+
                         val etluminousintensity = binding.etluminousintensity
-                        var luminousintensityNow = (listaDias.reversed()[0].children.reversed()[0].child("luminousintensity").value.toString().toFloat()*10).toString() + "-Lum"
+                        var luminousintensityNow = dataSnapshot.child("lm393").children.last().children.last().child("luminousintensity").value.toString() + "-Lum"
 
 
                         etluminousintensity.setText(luminousintensityNow)

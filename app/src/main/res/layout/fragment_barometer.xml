@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="Colombia | Pasto"
                 android:textAlignment="center"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
 
             <Space

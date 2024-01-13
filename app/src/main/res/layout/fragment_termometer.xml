@@ -63,7 +63,7 @@
                 android:id="@+id/textGallery"
                 android:layout_width="match_parent"
                 android:layout_height="204dp"
-                android:src="@drawable/temp" />
+                android:src="@drawable/termicsensor" />
 
         </LinearLayout>
 

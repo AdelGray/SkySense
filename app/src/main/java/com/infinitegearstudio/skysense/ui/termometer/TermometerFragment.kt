@@ -36,7 +36,7 @@ class TermometerFragment : Fragment() {
 
     // Obtén una referencia a la base de datos
     val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    val myRef: DatabaseReference = database.getReference("sensors").child("bmp280")
+    val myRef: DatabaseReference = database.getReference("sensors")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,22 +62,15 @@ class TermometerFragment : Fragment() {
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        Log.d(ContentValues.TAG, "dias encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
 
-                        for (daySnapshot in dataSnapshot.children) {
-                            listaDias.add(daySnapshot)
-                        }
-
-                        Log.d(ContentValues.TAG, "Tamaño: " + listaDias.size)
                         val entries = mutableListOf<Entry>()
-
                         val luminousintensityList: ArrayList<Float> = ArrayList()
                         var luminousintensity: Float
 
                         var count: Float = 0f
 
 
-                        for (horaSnapshot in listaDias.reversed()[0].children) {
+                        for (horaSnapshot in dataSnapshot.child("bmp280").children.last().children) {
                             luminousintensity =
                                 horaSnapshot.child("temperature").value.toString().toFloat()
                             entries.add(Entry(count, luminousintensity))
@@ -85,9 +78,9 @@ class TermometerFragment : Fragment() {
                             count++
                         }
 
-                        Log.d(ContentValues.TAG, "Tamaño entriees: " + entries.size)
+
                         val etluminousintensity = binding.etluminousintensity
-                        var luminousintensityNow = (listaDias.reversed()[0].children.reversed()[0].child("temperature").value.toString().toFloat()).toString() + " °C"
+                        var luminousintensityNow = dataSnapshot.child("bmp280").children.last().children.last().child("temperature").value.toString() + " °C"
 
 
                         etluminousintensity.setText(luminousintensityNow)

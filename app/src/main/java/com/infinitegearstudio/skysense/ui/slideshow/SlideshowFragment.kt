@@ -30,11 +30,12 @@ import java.util.Locale
 
 // Obtén una referencia a la base de datos
 val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-val myRef: DatabaseReference = database.getReference("sensors").child("dht22")
+val myRef: DatabaseReference = database.getReference("sensors")
 
 class SlideshowFragment : Fragment() {
 
     private var _binding: FragmentSlideshowBinding? = null
+    var active = true
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -51,124 +52,21 @@ class SlideshowFragment : Fragment() {
         val root: View = binding.root
 
 
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
 
 
 
 
-
-
-            val barChart: BarChart = binding.barChart
-            val listaDias: MutableList<DataSnapshot> = mutableListOf()
-
-            myRef.addValueEventListener(object : ValueEventListener {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        Log.d(ContentValues.TAG, "dias encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
-
-                        for (daySnapshot in dataSnapshot.children) {
-                            listaDias.add(daySnapshot)
-                        }
-
-                        Log.d(ContentValues.TAG, "Tamaño: " + listaDias.size)
-
-                        // Configura los datos de ejemplo para las barras
-                        val entries = mutableListOf<BarEntry>()
-
-                        val temperatureList: ArrayList<Float> = ArrayList()
-
-                        val humidityList: ArrayList<Float> = ArrayList()
-                        var temperature:Float
-
-                        var count: Float = 0f
-
-                        for (horaSnapshot in listaDias.reversed()[0].children) {
-                            temperature = horaSnapshot.child("temperature").value.toString().toFloat()
-                            entries.add(BarEntry(count,temperature))
-                            temperatureList.add(temperature)
-                            count++
-                        }
-
-
-                        val etTemperaturePort = binding.etTemperaturePort
-                        val etTemperature = binding.etTemperature
-                        val tvHumidity = binding.tvHumidity
-                        val tvAtm = binding.tvAtm
-
-                        var temperatureNow= Math.round(listaDias.reversed()[0].children.reversed()[0].child("temperature").value.toString().toFloat()).toString()+"°C"
-                        var humidityNow = Math.round(listaDias.reversed()[0].children.reversed()[0].child("humidity").value.toString().toFloat()).toString()+"%"
-                   
-                        etTemperaturePort.setText(temperatureNow)
-                        etTemperature.setText(temperatureNow)
-
-                        tvHumidity.setText(humidityNow)
-
-
-//-------------------------
-
-                        val tvFecha = binding.tvFecha
-                        val tvDia = binding.tvDia
-
-                        // Obtener la fecha y hora actual
-                        val fechaYHoraActual = LocalDateTime.now()
-
-                        // Formatear la fecha y hora según tus necesidades
-                        val fecha = DateTimeFormatter.ofPattern("d MMMM", Locale.getDefault())
-                        val dia = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
-                        val fechaFormateada = fechaYHoraActual.format(fecha)
-                        val horaFormateada = fechaYHoraActual.format(dia)
-                        // Imprimir la fecha y hora actual
-
-
-                        // Imprimir la fecha y hora actual
-                        tvDia.setText(horaFormateada)
-                        tvFecha.setText(fechaFormateada)
-
-                        println("Fecha y hora actual: $fechaFormateada")
-
-
-
-
-                        // Configurar el conjunto de datos de barras
-                        val dataSet = BarDataSet(entries, "Temperatura")
-                        val barData = BarData(dataSet)
-
-                        // Configurar el BarChart
-                        configureBarChart(barChart)
-
-                        // Establecer los datos en el BarChart
-                        barChart.data = barData
-
-                        // Convierte el valor a String antes de usarlo
-                        //val valorString = valorLong?.toString()
-
-
-                    } else {
-                        Log.d(ContentValues.TAG, "no encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Manejar error en la lectura de datos
-                    Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
-                }
-            })
-
-
-
-
-
-
-
-
-        }
-        return root
+    return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        active = !hidden
     }
 
     private fun configureBarChart(chart: BarChart) {

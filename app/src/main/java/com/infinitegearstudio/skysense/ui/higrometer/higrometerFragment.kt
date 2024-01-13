@@ -35,7 +35,7 @@ class higrometerFragment : Fragment() {
 
     // Obtén una referencia a la base de datos
     val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    val myRef: DatabaseReference = database.getReference("sensors").child("dht22")
+    val myRef: DatabaseReference = database.getReference("sensors")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,44 +50,31 @@ class higrometerFragment : Fragment() {
 
         higrometerViewModel.text.observe(viewLifecycleOwner) {
 
-
             val lineChart: LineChart = binding.lineChart
-            val listaDias: MutableList<DataSnapshot> = mutableListOf()
+
 
             myRef.addValueEventListener(object :
                 ValueEventListener {
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        Log.d(ContentValues.TAG, "dias encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
 
-                        for (daySnapshot in dataSnapshot.children) {
-                            listaDias.add(daySnapshot)
-                        }
-
-                        Log.d(ContentValues.TAG, "Tamaño: " + listaDias.size)
                         val entries = mutableListOf<Entry>()
-
-                        val luminousintensityList: ArrayList<Float> = ArrayList()
-                        var luminousintensity: Float
-
+                        val humidityList: ArrayList<Float> = ArrayList()
                         var count: Float = 0f
 
 
-                        for (horaSnapshot in listaDias.reversed()[0].children) {
-                            luminousintensity =
-                                horaSnapshot.child("humidity").value.toString().toFloat()
-                            entries.add(Entry(count, luminousintensity))
-                            luminousintensityList.add(luminousintensity)
+                        for (horaSnapshot in dataSnapshot.child("dht22").children.last().children) {
+                            var humidity = horaSnapshot.child("humidity").value.toString().toFloat()
+                            entries.add(Entry(count, humidity))
+                            humidityList.add(humidity)
                             count++
                         }
 
-                        Log.d(ContentValues.TAG, "Tamaño entriees: " + entries.size)
-                        val etluminousintensity = binding.etluminousintensity
-                        var luminousintensityNow = (listaDias.reversed()[0].children.reversed()[0].child("humidity").value.toString().toFloat()).toString() + " % Hum"
+                        val etHumidity = binding.etHumidity
+                        var humidityNow = dataSnapshot.child("dht22").children.last().children.last().child("humidity").value.toString() +" %"
 
-
-                        etluminousintensity.setText(luminousintensityNow)
+                        etHumidity.setText(humidityNow)
 
 
                         val dataSet = LineDataSet(entries, "Humedad")
@@ -119,12 +106,7 @@ class higrometerFragment : Fragment() {
                 }
             })
         }
-
-
-
         return root
-
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

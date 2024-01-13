@@ -2,6 +2,7 @@
 <resources>
     <string-array name="opciones_array">
 
+
         <item>1 min</item>
         <item>5 min</item>
         <item>15 min</item>

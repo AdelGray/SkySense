@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Switch
@@ -21,6 +22,7 @@ import com.infinitegearstudio.skysense.R
 import com.infinitegearstudio.skysense.databinding.FragmentBarometerBinding
 import com.infinitegearstudio.skysense.databinding.FragmentSettingsBinding
 import com.infinitegearstudio.skysense.ui.barometer.BarometerViewModel
+import kotlin.concurrent.thread
 
 class SettingsFragment : Fragment() {
 
@@ -91,6 +93,8 @@ class SettingsFragment : Fragment() {
 
         val spinner: Spinner = binding.spStation
 
+
+
 // Obtener el contexto desde el fragmento
         val context: Context = requireContext()
 
@@ -122,6 +126,8 @@ class SettingsFragment : Fragment() {
 
 
 
+
+
         // Obtén todos los datos en el nodo
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -131,6 +137,7 @@ class SettingsFragment : Fragment() {
                     val bmp280On = dataSnapshot.child("bmp280_on").getValue(Long::class.java)
                     val dht22on = dataSnapshot.child("dht22_on").getValue(Long::class.java)
                     val lm393on = dataSnapshot.child("lm393_on").getValue(Long::class.java)
+                    val refreshRate = dataSnapshot.child("refresh_rate").getValue(Long::class.java)
 
 
                     // Convierte el valor a String antes de usarlo
@@ -138,11 +145,71 @@ class SettingsFragment : Fragment() {
                     val bmp280OnString = bmp280On?.toString()
                     val dht22onOnString = dht22on?.toString()
                     val lm393onOnString = lm393on?.toString()
+                    val refreshRateOnString = refreshRate?.toString()
 
                     swStation.isChecked = stationOnString == "1"
                     swBmp280.isChecked = bmp280OnString == "1"
                     swDht22.isChecked = dht22onOnString == "1"
                     swLm393.isChecked = lm393onOnString == "1"
+
+
+
+
+                    spinner.setSelection(
+                        when (refreshRateOnString) {
+                            "60" -> 4
+                            "30" -> 3
+                            "15" -> 2
+                            "5" -> 1
+                            "1" -> 0
+                            else -> 0
+                        }
+                    )
+
+
+
+                    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parentView: AdapterView<*>?,
+                            selectedItemView: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+
+
+                            // Código a ejecutar cuando se selecciona un elemento en el Spinner
+                            val selectedItem = spinner.selectedItem.toString()
+                            println("Elemento seleccionado: $selectedItem")
+
+
+
+                            myRef.child("refresh_rate").setValue(
+                                when (selectedItem) {
+                                    "1 min" -> 1
+                                    "5 min" -> 5
+                                    "15 min" -> 15
+                                    "30 min" -> 30
+                                    "60 min" -> 60
+                                    else -> 60
+                                }
+                            )
+
+
+
+
+
+                            // Puedes realizar acciones adicionales aquí según la selección
+                        }
+
+                        override fun onNothingSelected(parentView: AdapterView<*>?) {
+                            // Código a ejecutar cuando no se ha seleccionado nada en el Spinner
+                            println("Ningún elemento seleccionado")
+                            // Puedes realizar acciones adicionales aquí si no se ha seleccionado nada
+                        }
+                    }
+
+
+
                 }
             }
 
@@ -151,6 +218,9 @@ class SettingsFragment : Fragment() {
                 Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
             }
         })
+
+
+
 
 
 
