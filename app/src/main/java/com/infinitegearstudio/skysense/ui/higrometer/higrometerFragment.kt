@@ -1,6 +1,7 @@
 package com.infinitegearstudio.skysense.ui.higrometer
 
 import android.content.ContentValues
+import android.graphics.Color
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -37,10 +38,17 @@ class higrometerFragment : Fragment() {
     val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     val myRef: DatabaseReference = database.getReference("sensors")
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
+
+
 
         val higrometerViewModel = ViewModelProvider(this).get(HigrometerViewModel::class.java)
 
@@ -50,62 +58,79 @@ class higrometerFragment : Fragment() {
 
         higrometerViewModel.text.observe(viewLifecycleOwner) {
 
-            val lineChart: LineChart = binding.lineChart
 
 
-            myRef.addValueEventListener(object :
-                ValueEventListener {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-
-                        val entries = mutableListOf<Entry>()
-                        val humidityList: ArrayList<Float> = ArrayList()
-                        var count: Float = 0f
+                val lineChart: LineChart = binding.lineChart
 
 
-                        for (horaSnapshot in dataSnapshot.child("dht22").children.last().children) {
-                            var humidity = horaSnapshot.child("humidity").value.toString().toFloat()
-                            entries.add(Entry(count, humidity))
-                            humidityList.add(humidity)
-                            count++
+                myRef.addValueEventListener(object :
+                    ValueEventListener {
+                    @RequiresApi(Build.VERSION_CODES.O)
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+
+                            if (_binding != null) {
+
+                                val entries = mutableListOf<Entry>()
+                                val humidityList: ArrayList<Float> = ArrayList()
+                                var count: Float = 0f
+
+
+                                for (horaSnapshot in dataSnapshot.child("dht22").children.last().children) {
+                                    var humidity =
+                                        horaSnapshot.child("humidity").value.toString().toFloat()
+                                    entries.add(Entry(count, humidity))
+                                    humidityList.add(humidity)
+                                    count++
+                                }
+
+                                val etHumidity = binding.etHumidity
+                                var humidityNow =
+                                    dataSnapshot.child("dht22").children.last().children.last()
+                                        .child("humidity").value.toString() + " %"
+
+                                etHumidity.setText(humidityNow)
+
+
+                                val dataSet = LineDataSet(entries, "Humedad")
+                                dataSet.color =
+                                    Color.parseColor("#1E88E5") // Este es un tono de azul oscuro
+                                dataSet.lineWidth = 1.8f // Cambia este valor según sea necesario
+
+                                val dataSets: ArrayList<ILineDataSet> = ArrayList()
+                                dataSets.add(dataSet)
+
+                                val lineData = LineData(dataSets)
+
+
+
+
+                                lineChart.data = lineData
+
+                                // Personalizar el gráfico según tus necesidades
+                                lineChart.description.text = "Humedad vs Tiempo"
+                                lineChart.setTouchEnabled(true)
+                                lineChart.isDragEnabled = true
+                                lineChart.setScaleEnabled(true)
+
+                                // Mostrar el gráfico
+                                lineChart.invalidate()
+
+
+                            } else {
+                                Log.d(ContentValues.TAG, "no encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
+                            }
                         }
 
-                        val etHumidity = binding.etHumidity
-                        var humidityNow = dataSnapshot.child("dht22").children.last().children.last().child("humidity").value.toString() +" %"
-
-                        etHumidity.setText(humidityNow)
-
-
-                        val dataSet = LineDataSet(entries, "Humedad")
-                        val dataSets: ArrayList<ILineDataSet> = ArrayList()
-                        dataSets.add(dataSet)
-
-                        val lineData = LineData(dataSets)
-                        lineChart.data = lineData
-
-                        // Personalizar el gráfico según tus necesidades
-                        lineChart.description.text = "Humedad vs Tiempo"
-                        lineChart.setTouchEnabled(true)
-                        lineChart.isDragEnabled = true
-                        lineChart.setScaleEnabled(true)
-
-                        // Mostrar el gráfico
-                        lineChart.invalidate()
-
-
-
-                    } else {
-                        Log.d(ContentValues.TAG, "no encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    // Manejar error en la lectura de datos
-                    Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
-                }
-            })
-        }
+                    override fun onCancelled(error: DatabaseError) {
+                        // Manejar error en la lectura de datos
+                        Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
+                    }
+                })
+            }
+
         return root
     }
 
@@ -114,5 +139,6 @@ class higrometerFragment : Fragment() {
 
         // TODO: Use the ViewModel
     }
+
 
 }

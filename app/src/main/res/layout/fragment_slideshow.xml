@@ -66,7 +66,7 @@
                 android:id="@+id/etTemperaturePort"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="22 °C"
+                android:text="220 °C"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/white"

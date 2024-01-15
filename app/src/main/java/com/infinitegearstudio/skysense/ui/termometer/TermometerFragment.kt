@@ -1,6 +1,7 @@
 package com.infinitegearstudio.skysense.ui.termometer
 
 import android.content.ContentValues
+import android.graphics.Color
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -30,8 +31,9 @@ import com.infinitegearstudio.skysense.ui.gallery.GalleryViewModel
 class TermometerFragment : Fragment() {
 
 
-    private var _binding: FragmentTermometerBinding? = null
-    private val binding get() = _binding!!
+
+        private var _binding: FragmentTermometerBinding? = null
+        private val binding get() = _binding!!
 
 
     // Obtén una referencia a la base de datos
@@ -54,67 +56,76 @@ class TermometerFragment : Fragment() {
         termometerViewModel.text.observe(viewLifecycleOwner) {
 
 
-            val lineChart: LineChart = binding.lineChart
-            val listaDias: MutableList<DataSnapshot> = mutableListOf()
-
-            myRef.addValueEventListener(object :
-                ValueEventListener {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-
-                        val entries = mutableListOf<Entry>()
-                        val luminousintensityList: ArrayList<Float> = ArrayList()
-                        var luminousintensity: Float
-
-                        var count: Float = 0f
 
 
-                        for (horaSnapshot in dataSnapshot.child("bmp280").children.last().children) {
-                            luminousintensity =
-                                horaSnapshot.child("temperature").value.toString().toFloat()
-                            entries.add(Entry(count, luminousintensity))
-                            luminousintensityList.add(luminousintensity)
-                            count++
+                val lineChart: LineChart = binding.lineChart
+                val listaDias: MutableList<DataSnapshot> = mutableListOf()
+
+                myRef.addValueEventListener(object :
+                    ValueEventListener {
+                    @RequiresApi(Build.VERSION_CODES.O)
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+
+                            if (_binding != null) {
+
+                                val entries = mutableListOf<Entry>()
+                                val luminousintensityList: ArrayList<Float> = ArrayList()
+                                var luminousintensity: Float
+
+                                var count: Float = 0f
+
+
+                                for (horaSnapshot in dataSnapshot.child("bmp280").children.last().children) {
+                                    luminousintensity =
+                                        horaSnapshot.child("temperature").value.toString().toFloat()
+                                    entries.add(Entry(count, luminousintensity))
+                                    luminousintensityList.add(luminousintensity)
+                                    count++
+                                }
+
+
+                                val etluminousintensity = binding.etluminousintensity
+                                var luminousintensityNow =
+                                    dataSnapshot.child("bmp280").children.last().children.last()
+                                        .child("temperature").value.toString() + " °C"
+
+
+                                etluminousintensity.setText(luminousintensityNow)
+
+
+                                val dataSet = LineDataSet(entries, "Temperatura")
+                                dataSet.color = Color.parseColor("#1E88E5")
+                                dataSet.lineWidth = 1.8f
+                                val dataSets: ArrayList<ILineDataSet> = ArrayList()
+                                dataSets.add(dataSet)
+
+                                val lineData = LineData(dataSets)
+                                lineChart.data = lineData
+
+                                // Personalizar el gráfico según tus necesidades
+                                lineChart.description.text = "Temperatura vs Tiempo"
+                                lineChart.setTouchEnabled(true)
+                                lineChart.isDragEnabled = true
+                                lineChart.setScaleEnabled(true)
+
+                                // Mostrar el gráfico
+                                lineChart.invalidate()
+
+
+                            } else {
+                                Log.d(ContentValues.TAG, "no encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
+                            }
                         }
 
-
-                        val etluminousintensity = binding.etluminousintensity
-                        var luminousintensityNow = dataSnapshot.child("bmp280").children.last().children.last().child("temperature").value.toString() + " °C"
-
-
-                        etluminousintensity.setText(luminousintensityNow)
-
-
-                        val dataSet = LineDataSet(entries, "Temperatura")
-                        val dataSets: ArrayList<ILineDataSet> = ArrayList()
-                        dataSets.add(dataSet)
-
-                        val lineData = LineData(dataSets)
-                        lineChart.data = lineData
-
-                        // Personalizar el gráfico según tus necesidades
-                        lineChart.description.text = "Temperatura vs Tiempo"
-                        lineChart.setTouchEnabled(true)
-                        lineChart.isDragEnabled = true
-                        lineChart.setScaleEnabled(true)
-
-                        // Mostrar el gráfico
-                        lineChart.invalidate()
-
-
-
-                    } else {
-                        Log.d(ContentValues.TAG, "no encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    // Manejar error en la lectura de datos
-                    Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
-                }
-            })
-        }
+                    override fun onCancelled(error: DatabaseError) {
+                        // Manejar error en la lectura de datos
+                        Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
+                    }
+                })
+            }
 
 
 

@@ -1,6 +1,7 @@
 package com.infinitegearstudio.skysense.ui.barometer
 
 import android.content.ContentValues
+import android.graphics.Color
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -51,78 +52,86 @@ class BarometerFragment : Fragment() {
         barometerViewModel.text.observe(viewLifecycleOwner) {
 
 
-            val lineChart: LineChart = binding.lineChart
-            val listaDias: MutableList<DataSnapshot> = mutableListOf()
 
-            myRef.addValueEventListener(object :
-                ValueEventListener {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        Log.d(ContentValues.TAG, "dias encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
 
-                        for (daySnapshot in dataSnapshot.children) {
-                            listaDias.add(daySnapshot)
+                val lineChart: LineChart = binding.lineChart
+                val listaDias: MutableList<DataSnapshot> = mutableListOf()
+
+                myRef.addValueEventListener(object :
+                    ValueEventListener {
+                    @RequiresApi(Build.VERSION_CODES.O)
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+
+                            if (_binding != null) {
+
+                                for (daySnapshot in dataSnapshot.children) {
+                                    listaDias.add(daySnapshot)
+                                }
+
+                                Log.d(ContentValues.TAG, "Tamaño: " + listaDias.size)
+                                val entries = mutableListOf<Entry>()
+
+                                val luminousintensityList: ArrayList<Float> = ArrayList()
+                                var luminousintensity: Float
+
+                                var count: Float = 0f
+
+
+                                for (horaSnapshot in listaDias.reversed()[0].children) {
+                                    luminousintensity =
+                                        horaSnapshot.child("pressure").value.toString().toFloat()
+                                    entries.add(Entry(count, luminousintensity))
+                                    luminousintensityList.add(luminousintensity)
+                                    count++
+                                }
+
+                                Log.d(ContentValues.TAG, "Tamaño entriees: " + entries.size)
+                                val etluminousintensity = binding.etluminousintensity
+                                var luminousintensityNow =
+                                    (listaDias.reversed()[0].children.reversed()[0].child("pressure").value.toString()
+                                        .toFloat()).toString() + "- Atm"
+
+
+                                etluminousintensity.setText(luminousintensityNow)
+
+
+                                val dataSet = LineDataSet(entries, "Presión")
+                                dataSet.color = Color.parseColor("#1E88E5")
+                                dataSet.lineWidth = 1.8f
+                                val dataSets: ArrayList<ILineDataSet> = ArrayList()
+                                dataSets.add(dataSet)
+
+                                val lineData = LineData(dataSets)
+                                lineChart.data = lineData
+
+                                // Personalizar el gráfico según tus necesidades
+                                lineChart.description.text = "Presión vs Tiempo"
+                                lineChart.setTouchEnabled(true)
+                                lineChart.isDragEnabled = true
+                                lineChart.setScaleEnabled(true)
+
+                                // Mostrar el gráfico
+                                lineChart.invalidate()
+
+
+                            } else {
+                                Log.d(ContentValues.TAG, "no encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
+                            }
                         }
 
-                        Log.d(ContentValues.TAG, "Tamaño: " + listaDias.size)
-                        val entries = mutableListOf<Entry>()
-
-                        val luminousintensityList: ArrayList<Float> = ArrayList()
-                        var luminousintensity: Float
-
-                        var count: Float = 0f
-
-
-                        for (horaSnapshot in listaDias.reversed()[0].children) {
-                            luminousintensity =
-                                horaSnapshot.child("pressure").value.toString().toFloat()
-                            entries.add(Entry(count, luminousintensity))
-                            luminousintensityList.add(luminousintensity)
-                            count++
-                        }
-
-                        Log.d(ContentValues.TAG, "Tamaño entriees: " + entries.size)
-                        val etluminousintensity = binding.etluminousintensity
-                        var luminousintensityNow = (listaDias.reversed()[0].children.reversed()[0].child("pressure").value.toString().toFloat()).toString() + "- Atm"
-
-
-                        etluminousintensity.setText(luminousintensityNow)
-
-
-                        val dataSet = LineDataSet(entries, "Presión")
-                        val dataSets: ArrayList<ILineDataSet> = ArrayList()
-                        dataSets.add(dataSet)
-
-                        val lineData = LineData(dataSets)
-                        lineChart.data = lineData
-
-                        // Personalizar el gráfico según tus necesidades
-                        lineChart.description.text = "Presión vs Tiempo"
-                        lineChart.setTouchEnabled(true)
-                        lineChart.isDragEnabled = true
-                        lineChart.setScaleEnabled(true)
-
-                        // Mostrar el gráfico
-                        lineChart.invalidate()
-
-
-
-                    } else {
-                        Log.d(ContentValues.TAG, "no encontrado.-.-.-.-.-.-.-.-.-.-.-.-")
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    // Manejar error en la lectura de datos
-                    Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
-                }
-            })
-        }
-
+                    override fun onCancelled(error: DatabaseError) {
+                        // Manejar error en la lectura de datos
+                        Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
+                    }
+                })
+            }
 
 
-        return root
+
+            return root
 
 
     }

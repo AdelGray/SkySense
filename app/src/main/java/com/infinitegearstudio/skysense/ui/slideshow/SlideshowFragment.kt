@@ -22,9 +22,11 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.infinitegearstudio.skysense.R
+import com.infinitegearstudio.skysense.databinding.FragmentHomeBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.infinitegearstudio.skysense.databinding.FragmentSlideshowBinding
+import com.infinitegearstudio.skysense.ui.home.HomeViewModel
 import java.util.Locale
 
 
@@ -34,48 +36,96 @@ val myRef: DatabaseReference = database.getReference("sensors")
 
 class SlideshowFragment : Fragment() {
 
-    private var _binding: FragmentSlideshowBinding? = null
-    var active = true
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding: FragmentSlideshowBinding? = null
     private val binding get() = _binding!!
+
+    val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+    val myRef: DatabaseReference = com.infinitegearstudio.skysense.ui.slideshow.database.getReference("sensors")
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val slideshowViewModel = ViewModelProvider(this).get(SlideshowViewModel::class.java)
+        val SlideshowViewModel = ViewModelProvider(this).get(SlideshowViewModel::class.java)
 
         _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 
 
+        SlideshowViewModel.text.observe(viewLifecycleOwner) {
+            if (_binding != null && isAdded) {  // Verificar si el fragmento está agregado
+                myRef.addValueEventListener(object : ValueEventListener {
+                    @RequiresApi(Build.VERSION_CODES.O)
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+
+                            if (_binding != null) {
+
+                                val etTemperaturePort = binding.etTemperaturePort
+                                val etTemperature = binding.etTemperature
+                                val tvHumidity = binding.tvHumidity
+                                val tvAtm = binding.tvAtm
+                                val tvLum = binding.tvLum
 
 
+                                // Verificar si las vistas no son nulas antes de realizar operaciones
+                                if (etTemperaturePort != null && etTemperature != null &&
+                                    tvHumidity != null && tvAtm != null && tvLum != null
+                                ) {
 
-    return root
+                                    if (etTemperaturePort != null) {
+                                        Log.d(
+                                            "HomeFragment",
+                                            "etTemperaturePort no es nulo"
+                                        )
+                                        var temperatureNow =
+                                            dataSnapshot.child("dht22").children.last().children.last()
+                                                .child("temperature").value.toString() + " °C"
+                                        var humidityNow =
+                                            dataSnapshot.child("dht22").children.last().children.last()
+                                                .child("humidity").value.toString() + " %"
+                                        var luminosityNow =
+                                            dataSnapshot.child("lm393").children.last().children.last()
+                                                .child("luminousintensity").value.toString() + " -Lum"
+                                        var atmNow =
+                                            dataSnapshot.child("bmp280").children.last().children.last()
+                                                .child("pressure").value.toString() + " -Atm"
+
+                                        etTemperaturePort.setText(temperatureNow)
+                                        etTemperature.setText(temperatureNow)
+                                        tvHumidity.setText(humidityNow)
+                                        tvLum.setText(luminosityNow)
+                                        tvAtm.setText(atmNow)
+
+                                    }
+
+
+                                } else {
+                                    Log.e("HomeFragment", "Al menos una vista es nula.")
+                                }
+                            } else {
+                                Log.d(ContentValues.TAG, "no encontrado.")
+                            }
+                        }
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Manejar error en la lectura de datos
+                        Log.w(ContentValues.TAG, "Error al leer datos: ${error.message}")
+                    }
+                })
+            }
+        }
+
+        return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        active = !hidden
-    }
-
-    private fun configureBarChart(chart: BarChart) {
-        chart.description.isEnabled = false
-        chart.setDrawGridBackground(false)
-        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        chart.axisRight.isEnabled = false
-        chart.setTouchEnabled(true)
-        chart.setPinchZoom(true)
-        chart.animateY(1000)
     }
 }

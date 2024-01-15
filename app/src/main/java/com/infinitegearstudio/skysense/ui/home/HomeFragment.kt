@@ -54,7 +54,7 @@ import java.util.Locale
             _binding = FragmentHomeBinding.inflate(inflater, container, false)
             val root: View = binding.root
 
-            if(false) {
+
 
                 homeViewModel.text.observe(viewLifecycleOwner) {
                     if (_binding != null && isAdded) {  // Verificar si el fragmento está agregado
@@ -62,48 +62,56 @@ import java.util.Locale
                             @RequiresApi(Build.VERSION_CODES.O)
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                    val etTemperaturePort = binding.etTemperaturePort
-                                    val etTemperature = binding.etTemperature
-                                    val tvHumidity = binding.tvHumidity
-                                    val tvAtm = binding.tvAtm
-                                    val tvLum = binding.tvLum
+
+                                    if (_binding != null) {
+
+                                        val etTemperaturePort = binding.etTemperaturePort
+                                        val etTemperature = binding.etTemperature
+                                        val tvHumidity = binding.tvHumidity
+                                        val tvAtm = binding.tvAtm
+                                        val tvLum = binding.tvLum
 
 
-                                    // Verificar si las vistas no son nulas antes de realizar operaciones
-                                    if (etTemperaturePort != null && etTemperature != null &&
-                                        tvHumidity != null && tvAtm != null && tvLum != null
-                                    ) {
+                                        // Verificar si las vistas no son nulas antes de realizar operaciones
+                                        if (etTemperaturePort != null && etTemperature != null &&
+                                            tvHumidity != null && tvAtm != null && tvLum != null
+                                        ) {
 
-                                        if (etTemperaturePort != null) {
-                                            Log.d("HomeFragment", "etTemperaturePort no es nulo")
-                                            var temperatureNow =
-                                                dataSnapshot.child("dht22").children.last().children.last()
-                                                    .child("temperature").value.toString() + " °C"
-                                            var humidityNow =
-                                                dataSnapshot.child("dht22").children.last().children.last()
-                                                    .child("humidity").value.toString() + " %"
-                                            var luminosityNow =
-                                                dataSnapshot.child("lm393").children.last().children.last()
-                                                    .child("luminousintensity").value.toString() + " -Lum"
-                                            var atmNow =
-                                                dataSnapshot.child("bmp280").children.last().children.last()
-                                                    .child("pressure").value.toString() + " -Atm"
+                                            if (etTemperaturePort != null) {
+                                                Log.d(
+                                                    "HomeFragment",
+                                                    "etTemperaturePort no es nulo"
+                                                )
+                                                var temperatureNow =
+                                                    dataSnapshot.child("dht22").children.last().children.last()
+                                                        .child("temperature").value.toString() + " °C"
+                                                var humidityNow =
+                                                    dataSnapshot.child("dht22").children.last().children.last()
+                                                        .child("humidity").value.toString() + " %"
+                                                var luminosityNow =
+                                                    dataSnapshot.child("lm393").children.last().children.last()
+                                                        .child("luminousintensity").value.toString() + " -Lum"
+                                                var atmNow =
+                                                    dataSnapshot.child("bmp280").children.last().children.last()
+                                                        .child("pressure").value.toString() + " -Atm"
 
-                                            etTemperaturePort.setText(temperatureNow)
-                                            etTemperature.setText(temperatureNow)
-                                            tvHumidity.setText(humidityNow)
-                                            tvLum.setText(luminosityNow)
-                                            tvAtm.setText(atmNow)
+                                                etTemperaturePort.setText(temperatureNow)
+                                                etTemperature.setText(temperatureNow)
+                                                tvHumidity.setText(humidityNow)
+                                                tvLum.setText(luminosityNow)
+                                                tvAtm.setText(atmNow)
 
+                                            }
+
+
+                                        } else {
+                                            Log.e("HomeFragment", "Al menos una vista es nula.")
                                         }
-
-
                                     } else {
-                                        Log.e("HomeFragment", "Al menos una vista es nula.")
+                                        Log.d(ContentValues.TAG, "no encontrado.")
                                     }
-                                } else {
-                                    Log.d(ContentValues.TAG, "no encontrado.")
                                 }
+
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -113,7 +121,6 @@ import java.util.Locale
                         })
                     }
                 }
-            }
 
             return root
         }

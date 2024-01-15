@@ -111,105 +111,93 @@ class SettingsFragment : Fragment() {
 // Asignar el adaptador al Spinner
         spinner.adapter = adapter
 
-
-
-
-
         val selectedValue: String = spinner.selectedItem.toString()
-
-
-
-
-
-
-
-
-
-
-
 
         // Obtén todos los datos en el nodo
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Obtiene el valor directamente como Long
-                    val stationOn = dataSnapshot.child("station_on").getValue(Long::class.java)
-                    val bmp280On = dataSnapshot.child("bmp280_on").getValue(Long::class.java)
-                    val dht22on = dataSnapshot.child("dht22_on").getValue(Long::class.java)
-                    val lm393on = dataSnapshot.child("lm393_on").getValue(Long::class.java)
-                    val refreshRate = dataSnapshot.child("refresh_rate").getValue(Long::class.java)
+
+                    if (_binding != null) {
 
 
-                    // Convierte el valor a String antes de usarlo
-                    val stationOnString = stationOn?.toString()
-                    val bmp280OnString = bmp280On?.toString()
-                    val dht22onOnString = dht22on?.toString()
-                    val lm393onOnString = lm393on?.toString()
-                    val refreshRateOnString = refreshRate?.toString()
-
-                    swStation.isChecked = stationOnString == "1"
-                    swBmp280.isChecked = bmp280OnString == "1"
-                    swDht22.isChecked = dht22onOnString == "1"
-                    swLm393.isChecked = lm393onOnString == "1"
+                        // Obtiene el valor directamente como Long
+                        val stationOn = dataSnapshot.child("station_on").getValue(Long::class.java)
+                        val bmp280On = dataSnapshot.child("bmp280_on").getValue(Long::class.java)
+                        val dht22on = dataSnapshot.child("dht22_on").getValue(Long::class.java)
+                        val lm393on = dataSnapshot.child("lm393_on").getValue(Long::class.java)
+                        val refreshRate =
+                            dataSnapshot.child("refresh_rate").getValue(Long::class.java)
 
 
+                        // Convierte el valor a String antes de usarlo
+                        val stationOnString = stationOn?.toString()
+                        val bmp280OnString = bmp280On?.toString()
+                        val dht22onOnString = dht22on?.toString()
+                        val lm393onOnString = lm393on?.toString()
+                        val refreshRateOnString = refreshRate?.toString()
 
-
-                    spinner.setSelection(
-                        when (refreshRateOnString) {
-                            "60" -> 4
-                            "30" -> 3
-                            "15" -> 2
-                            "5" -> 1
-                            "1" -> 0
-                            else -> 0
-                        }
-                    )
+                        swStation.isChecked = stationOnString == "1"
+                        swBmp280.isChecked = bmp280OnString == "1"
+                        swDht22.isChecked = dht22onOnString == "1"
+                        swLm393.isChecked = lm393onOnString == "1"
 
 
 
-                    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parentView: AdapterView<*>?,
-                            selectedItemView: View?,
-                            position: Int,
-                            id: Long
-                        ) {
+
+                        spinner.setSelection(
+                            when (refreshRateOnString) {
+                                "60" -> 4
+                                "30" -> 3
+                                "15" -> 2
+                                "5" -> 1
+                                "1" -> 0
+                                else -> 0
+                            }
+                        )
 
 
-                            // Código a ejecutar cuando se selecciona un elemento en el Spinner
-                            val selectedItem = spinner.selectedItem.toString()
-                            println("Elemento seleccionado: $selectedItem")
+
+                        spinner.onItemSelectedListener =
+                            object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    parentView: AdapterView<*>?,
+                                    selectedItemView: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+
+
+                                    // Código a ejecutar cuando se selecciona un elemento en el Spinner
+                                    val selectedItem = spinner.selectedItem.toString()
+                                    println("Elemento seleccionado: $selectedItem")
 
 
 
-                            myRef.child("refresh_rate").setValue(
-                                when (selectedItem) {
-                                    "1 min" -> 1
-                                    "5 min" -> 5
-                                    "15 min" -> 15
-                                    "30 min" -> 30
-                                    "60 min" -> 60
-                                    else -> 60
+                                    myRef.child("refresh_rate").setValue(
+                                        when (selectedItem) {
+                                            "1 min" -> 1
+                                            "5 min" -> 5
+                                            "15 min" -> 15
+                                            "30 min" -> 30
+                                            "60 min" -> 60
+                                            else -> 60
+                                        }
+                                    )
+
+
+                                    // Puedes realizar acciones adicionales aquí según la selección
                                 }
-                            )
+
+                                override fun onNothingSelected(parentView: AdapterView<*>?) {
+                                    // Código a ejecutar cuando no se ha seleccionado nada en el Spinner
+                                    println("Ningún elemento seleccionado")
+                                    // Puedes realizar acciones adicionales aquí si no se ha seleccionado nada
+                                }
+                            }
 
 
-
-
-
-                            // Puedes realizar acciones adicionales aquí según la selección
-                        }
-
-                        override fun onNothingSelected(parentView: AdapterView<*>?) {
-                            // Código a ejecutar cuando no se ha seleccionado nada en el Spinner
-                            println("Ningún elemento seleccionado")
-                            // Puedes realizar acciones adicionales aquí si no se ha seleccionado nada
-                        }
                     }
-
-
-
                 }
             }
 
@@ -219,24 +207,7 @@ class SettingsFragment : Fragment() {
             }
         })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         return root
-
-
 
     }
 
